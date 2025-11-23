@@ -1,14 +1,11 @@
 "use client";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-const Page = () => {
-  const { data: session } = useSession();
+const RegisterPage = () => {
   const [error, setError] = useState("");
-
-  const handlegmaillogin = () => {
-    signIn("google");
-  };
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,17 +13,32 @@ const Page = () => {
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    const res = await signIn("credentials", {
-      redirect: false,
-      email,
-      password,
-    });
+    try {
+      // Call your Express API for registration
+      const res = await fetch("http://localhost:5000/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-    if (res.error) {
-      setError("Invalid email or password");
-    } else {
-      window.location.href = "/";
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || "Registration failed");
+      } else {
+        setError("");
+        // Optionally, log in the user automatically
+        await signIn("credentials", { redirect: false, email, password });
+        router.push("/"); // Redirect to homepage after successful registration
+      }
+    } catch (err) {
+      setError("Something went wrong. Please try again.");
+      console.error(err);
     }
+  };
+
+  const handleGoogleSignIn = () => {
+    signIn("google", { callbackUrl: "/" });
   };
 
   return (
@@ -38,8 +50,8 @@ const Page = () => {
               <span className="text-white font-bold text-xl">S</span>
             </div>
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Welcome back</h1>
-          <p className="text-gray-600">Sign in to your account</p>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">Create account</h1>
+          <p className="text-gray-600">Sign up to get started</p>
         </div>
 
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
@@ -53,6 +65,7 @@ const Page = () => {
                 name="email"
                 className="w-full px-3 py-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Enter your email"
+                required
               />
             </div>
 
@@ -63,27 +76,29 @@ const Page = () => {
                 name="password"
                 className="w-full px-3 py-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Enter your password"
+                required
               />
             </div>
 
             <button type="submit" className="w-full bg-blue-600 text-white py-2 px-4 rounded-md font-medium hover:bg-blue-700 transition">
-              Sign In
+              Sign Up
             </button>
           </form>
+
+          {/* Google Sign-In Button */}
           <div className="py-5">
             <button
-              onClick={handlegmaillogin}
+              onClick={handleGoogleSignIn}
               className={` p-2.5
-        w-full flex items-center justify-center gap-3 
-        bg-white border border-gray-300 rounded-lg 
-        font-medium text-gray-700  
-        hover:bg-gray-50 hover:shadow-md 
-        active:bg-gray-100 
-        transition-all duration-200 
-        transform hover:scale-105 active:scale-95
-        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
-        
-      `}
+                w-full flex items-center justify-center gap-3 
+                bg-white border border-gray-300 rounded-lg 
+                font-medium text-gray-700  
+                hover:bg-gray-50 hover:shadow-md 
+                active:bg-gray-100 
+                transition-all duration-200 
+                transform hover:scale-105 active:scale-95
+                focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+              `}
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -91,8 +106,17 @@ const Page = () => {
                 <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
                 <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
               </svg>
-              Login With Gmail
+              Sign Up With Google
             </button>
+          </div>
+
+          <div className="py-2 text-center">
+            <p className="text-gray-600 text-sm">
+              Already have an account?{" "}
+              <a href="/login" className="text-blue-600 hover:text-blue-500 font-medium">
+                Sign In
+              </a>
+            </p>
           </div>
         </div>
       </div>
@@ -100,4 +124,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default RegisterPage;
