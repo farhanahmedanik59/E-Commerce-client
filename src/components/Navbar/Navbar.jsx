@@ -53,10 +53,10 @@ const Navbar = () => {
 
                 {isDropdownOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md border z-50">
-                    <Link href="/add-product" className="block px-4 py-2 hover:bg-gray-100 text-sm text-gray-700">
+                    <Link href="/addproduct" className="block px-4 py-2 hover:bg-gray-100 text-sm text-gray-700">
                       Add Product
                     </Link>
-                    <Link href="/manage-products" className="block px-4 py-2 hover:bg-gray-100 text-sm text-gray-700">
+                    <Link href="/manageproducts" className="block px-4 py-2 hover:bg-gray-100 text-sm text-gray-700">
                       Manage Products
                     </Link>
                     <button onClick={() => signOut()} className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm text-gray-700">
