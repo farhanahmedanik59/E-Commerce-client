@@ -1,97 +1,20 @@
-// app/page.js
 "use client";
 
-import { useState, useMemo } from "react";
+import Link from "next/link";
+import { useState, useMemo, useEffect } from "react";
 
 export default function ProductListPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [sortBy, setSortBy] = useState("default");
   const [hoveredProduct, setHoveredProduct] = useState(null);
-
+  const [products, setProducts] = useState([]);
   // Product data
-  const products = [
-    {
-      id: 1,
-      title: "Classic Leather Jacket",
-      category: "Men",
-      shortDescription: "Stylish black leather jacket for men with premium finish.",
-      price: 249.99,
-      imageUrl: "https://images.unsplash.com/photo-1551028719-00167b16eac5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      rating: 4.5,
-      reviews: 128,
-    },
-    {
-      id: 2,
-      title: "Elegant Evening Dress",
-      category: "Women",
-      shortDescription: "Red evening gown with flowing design and elegant silhouette.",
-      price: 199.99,
-      imageUrl: "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      rating: 4.8,
-      reviews: 89,
-    },
-    {
-      id: 3,
-      title: "Casual Denim Jeans",
-      category: "Men",
-      shortDescription: "Comfortable slim-fit denim jeans for everyday wear.",
-      price: 79.99,
-      imageUrl: "https://images.unsplash.com/photo-1542272604-787c3835535d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      rating: 4.3,
-      reviews: 256,
-    },
-    {
-      id: 4,
-      title: "Summer Floral Dress",
-      category: "Women",
-      shortDescription: "Light and breezy floral dress perfect for summer days.",
-      price: 89.99,
-      imageUrl: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      rating: 4.6,
-      reviews: 167,
-    },
-    {
-      id: 5,
-      title: "Sport Sneakers",
-      category: "Men",
-      shortDescription: "Comfortable athletic sneakers for running and gym.",
-      price: 129.99,
-      imageUrl: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      rating: 4.4,
-      reviews: 312,
-    },
-    {
-      id: 6,
-      title: "Chic Handbag",
-      category: "Women",
-      shortDescription: "Stylish leather handbag with multiple compartments.",
-      price: 149.99,
-      imageUrl: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      rating: 4.7,
-      reviews: 203,
-    },
-    {
-      id: 7,
-      title: "Men's Winter Coat",
-      category: "Men",
-      shortDescription: "Heavy-duty winter coat with insulated lining.",
-      price: 299.99,
-      imageUrl: "https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      rating: 4.5,
-      reviews: 98,
-    },
-    {
-      id: 8,
-      title: "Women's High Heels",
-      category: "Women",
-      shortDescription: "Elegant stiletto heels for formal occasions.",
-      price: 129.99,
-      imageUrl: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      rating: 4.2,
-      reviews: 145,
-    },
-  ];
+  useEffect(() => {
+    fetch("http://localhost:5000/items")
+      .then((res) => res.json())
+      .then((data) => setProducts(data));
+  }, [products]);
 
   const categories = ["Men", "Women"];
 
@@ -125,7 +48,7 @@ export default function ProductListPage() {
     }
 
     return filtered;
-  }, [searchQuery, selectedCategory, sortBy]);
+  }, [searchQuery, selectedCategory, sortBy, products]);
 
   // Clear all filters
   const clearFilters = () => {
@@ -150,7 +73,7 @@ export default function ProductListPage() {
         <div className="container mx-auto px-4 py-8">
           {/* Page Title */}
           <div className="text-center mb-8">
-            <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3">FashionStore</h1>
+            <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3">ShopHub</h1>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">Discover amazing products at great prices. Quality guaranteed with fast delivery.</p>
           </div>
 
@@ -299,9 +222,12 @@ export default function ProductListPage() {
                   <p className="text-gray-600 text-sm mb-4 line-clamp-2 h-12 leading-relaxed">{product.shortDescription}</p>
 
                   <div className="flex gap-2">
-                    <button className="flex-1 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white py-3 px-4 rounded-lg font-semibold transition-all duration-300 transform hover:-translate-y-1 active:scale-95 shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
-                      Show Details
-                    </button>
+                    <Link href={`/products/${product._id}`}>
+                      {" "}
+                      <button className="flex-1 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white py-3 px-4 rounded-lg font-semibold transition-all duration-300 transform hover:-translate-y-1 active:scale-95 shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
+                        Show Details
+                      </button>
+                    </Link>
                     <button className="px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-all duration-300 transform hover:scale-105">
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path
