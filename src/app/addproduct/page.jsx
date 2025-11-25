@@ -38,7 +38,7 @@ export default function AddProductPage() {
     }
 
     try {
-      fetch("http://localhost:5000/items", {
+      fetch("https://ecommerce-two-puce-79.vercel.app/items", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title: formData.title, shortDescription: formData.shortDescription, fullDescription: formData.fullDescription, imageUrl: formData.imageUrl, price: formData.price }),

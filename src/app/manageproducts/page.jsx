@@ -16,7 +16,7 @@ export default function ManageProductsPage() {
       try {
         setLoading(true);
         // Replace with your actual API endpoint
-        const response = await fetch("http://localhost:5000/items");
+        const response = await fetch("https://ecommerce-two-puce-79.vercel.app/items");
 
         if (!response.ok) {
           throw new Error("Failed to fetch products");
@@ -37,7 +37,7 @@ export default function ManageProductsPage() {
 
   const handleDelete = async (_id) => {
     try {
-      const response = await fetch(`http://localhost:5000/items/${_id}`, {
+      const response = await fetch(`https://ecommerce-two-puce-79.vercel.app/items/${_id}`, {
         method: "DELETE",
       });
 

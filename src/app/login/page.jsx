@@ -6,8 +6,8 @@ const Page = () => {
   const { data: session } = useSession();
   const [error, setError] = useState("");
 
-  const handlegmaillogin = () => {
-    signIn("google");
+  const handlegmaillogin = async () => {
+    const res = await signIn("google", { callbackUrl: "/" });
   };
 
   const handleSubmit = async (e) => {

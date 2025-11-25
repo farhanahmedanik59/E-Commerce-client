@@ -40,7 +40,7 @@ export default function ProductDetailPage() {
   const [selectedColor, setSelectedColor] = useState("Black");
 
   useEffect(() => {
-    fetch(`http://localhost:5000/products/${params.id}`)
+    fetch(`https://ecommerce-two-puce-79.vercel.app/products/${params.id}`)
       .then((res) => res.json())
       .then((data) => {
         setProduct(data);

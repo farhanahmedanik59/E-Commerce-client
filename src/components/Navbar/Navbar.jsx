@@ -14,14 +14,17 @@ const Navbar = () => {
 
   const links = (
     <>
-      <Link href="/" className="text-gray-700 hover:text-blue-600 px-3 underline py-2 rounded-md text-sm font-medium transition duration-300">
+      <Link href="/" className="text-gray-700 hover:text-blue-600 px-3 py-2  rounded-md text-sm font-extrabold transition duration-300">
         Home
       </Link>
-      <Link href="/products" className="text-gray-700 hover:text-blue-600 px-3 py-2 underline rounded-md text-sm font-medium transition duration-300">
+      <Link href="/products" className="text-gray-700 hover:text-blue-600 px-3 py-2  rounded-md text-sm font-extrabold transition duration-300">
         Products
       </Link>
-      <Link href="/about" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition duration-300">
+      <Link href="/about" className="text-gray-700 font-extrabold hover:text-blue-600 px-3  py-2 rounded-md text-sm  transition duration-300">
         About Us
+      </Link>
+      <Link href={"/testimonial"} className="text-gray-700 font-extrabold hover:text-blue-600 px-3  py-2 rounded-md text-sm  transition duration-300">
+        Testimonial
       </Link>
     </>
   );

@@ -15,7 +15,7 @@ const RegisterPage = () => {
 
     try {
       // Call your Express API for registration
-      const res = await fetch("http://localhost:5000/register", {
+      const res = await fetch("https://ecommerce-two-puce-79.vercel.app/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

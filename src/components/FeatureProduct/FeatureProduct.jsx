@@ -38,6 +38,10 @@ const FeaturedProducts = () => {
     },
   ];
 
+  const handleImgError = (e) => {
+    e.target.src = "https://via.placeholder.com/400x320";
+  };
+
   return (
     <section className="py-16 bg-[#EFE9E3]">
       <div className="max-w-7xl mx-auto px-6">
@@ -49,10 +53,10 @@ const FeaturedProducts = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {products.map((product) => (
             <div key={product.id} className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden">
-              <div className="relative overflow-hidden">
-                <img src={product.image} alt={product.name} className="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500" />
+              <div className="relative overflow-hidden h-80">
+                <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onError={handleImgError} />
                 <div className="absolute top-4 right-4 bg-white rounded-full px-3 py-1 text-sm font-semibold text-gray-900">{product.category}</div>
-                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300" />
+                <div className=" inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300"></div>
               </div>
 
               <div className="p-6">
